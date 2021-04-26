@@ -4,16 +4,16 @@ import App from './components/root/App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import configureStore from './redux/reducers/configureStore'
-import 'alertifyjs/build/css/alertify.min.css'
-
+import configureStore from './redux/reducers/configureStore';
+import 'alertifyjs/build/css/alertify.min.css';
+import {BrowserRouter} from 'react-router-dom';
 
 const store = configureStore();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <BrowserRouter><React.StrictMode>
     <Provider store = {store}><App /></Provider>
-  </React.StrictMode>,
+  </React.StrictMode></BrowserRouter>,
   document.getElementById('root')
 );
 

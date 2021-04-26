@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import {Link} from 'react-router-dom'
+import * as cartAcitons from "../../redux/actions/cartActions";
+import alertify from "alertifyjs"
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -12,6 +16,12 @@ import {
 
 
 class CartSummary extends Component {
+
+  removeFromCart(product){
+    this.props.actions.removeFromCart(product)
+    alertify.error(product.productName + " sepetten silindi.")
+}
+
   renderEmpty() {
     return (
       <NavItem>
@@ -29,13 +39,15 @@ class CartSummary extends Component {
           <DropdownMenu right>
             {
                 this.props.cart.map(cartItem => (
-                    <DropdownItem key={cartItem.product.id}>{cartItem.product.productName}
+                    <DropdownItem key={cartItem.product.id}>
+                    <Badge color="danger" onClick={()=>this.removeFromCart(cartItem.product)}>X</Badge>
+                      {cartItem.product.productName}
                     <Badge color="success">{cartItem.quantity}</Badge>
                     </DropdownItem>
                 ))
             }
             <DropdownItem divider />
-            <DropdownItem>Sepete Git</DropdownItem>
+            <DropdownItem> <Link to="/cart">Sepete Git</Link></DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
       )
@@ -52,10 +64,21 @@ class CartSummary extends Component {
   }
 }
 
+//State e bağlanmak için
 function mapStateToProps(state) {
   return {
     cart: state.cartReducer,
   };
 }
+
+//actionu kullanmak için
+function mapDispatchToProps(dispatch){
+  return{
+    actions : {
+      removeFromCart : bindActionCreators(cartAcitons.removeFromCart,dispatch)
+    }
+  }
+}
+
 //State i proplara aktarıtoruz.
-export default connect(mapStateToProps)(CartSummary);
+export default connect(mapStateToProps,mapDispatchToProps)(CartSummary);
