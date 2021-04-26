@@ -4,10 +4,10 @@ import initialState from './initialState';
 
 //Reducer bizim için state döndürür. Tutucu olarak düşün.
 
-export default function changeCategoryReducer(state=initialState.currentCategory,action){
+export default function changeCategoryReducer(state=initialState.categories,action){
 
     switch (action.type) {
-        case actionTypes.CHANGE_CATEGORY:
+        case actionTypes.GET_CATEGORIES_SUCCESS:
             return action.payload
         
         default:
