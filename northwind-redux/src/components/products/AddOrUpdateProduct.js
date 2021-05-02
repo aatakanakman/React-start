@@ -1,7 +1,9 @@
+//useEffect -> CompanentDidMount'un yerine kullanacağımız fonksiyon olarak düşünebiliriz. Yaşam döngüsünün tek bir yerde toplanması gibi.
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {getCategories} from '../../redux/actions/categoryActions';
-import {saveProduct} from '../../redux/actions/productActions';
+import { getCategories } from "../../redux/actions/categoryActions";
+import { saveProduct } from "../../redux/actions/productActions";
+import ProductDetail from "./ProductDetail";
 
 function AddOrUpdateProduct({
   products,
@@ -13,44 +15,75 @@ function AddOrUpdateProduct({
   //fonskiyonun proplarına bunları ekle anlamında kullanılıyor.
   ...props
 }) {
-  //State içindeki productu, set produkct ile set edebilirim demek. React Hooks
+  //(Distracting)State içindeki productu, set product ile set edebilirim demek. React Hooks
   const [product, setProduct] = useState({ ...props.product });
-
+  const [errors,setErrors] = useState({}) 
   useEffect(() => {
-    if (state.categories.length === 0) {
+    if (categories.length === 0) {
       getCategories();
     }
     setProduct({ ...props.product });
+  }, [props.product]);
 
-},[props.product]);
-    
-    
-    function handleChange(event) {
+  function handleChange(event) {
     const { name, value } = event.target;
     setProduct((previousProduct) => ({
       ...previousProduct,
       [name]: name === "categoryId" ? parseInt(value, 10) : value,
     }));
+
+    validate(name,value);
+
+    
   }
 
-  function handleSave(event){
-      event.preventDefault();
-      saveProduct(product).then(() => {
-          history.pushState("/")
-      })
+  function validate(name,value){
+    if(name === "productName" && value === ""){
+      setErrors(previousErrors => ({...previousErrors, productName : "Ürün ismi olmalıdır."}))
+    }else{
+      setErrors(previousErrors => ({...previousErrors, productName : ""}))
+    }
   }
+
+  function handleSave(event) {
+    event.preventDefault();
+    saveProduct(product).then(() => {
+      history.push("/");
+    });
+  }
+
+  return (
+    <ProductDetail
+      product={product}
+      categories={categories}
+      onChange={handleChange}
+      onSave={handleSave}
+      errors = {errors}
+    ></ProductDetail>
+  );
 }
 
-function mapStateToProps(state,ownProps) {
-    
-    
+export function getProductById(products, productId) {
+  let product = products.find((product) => product.id == productId) || null;
+  return product;
+}
 
+function mapStateToProps(state, ownProps) {
+  const productId = ownProps.match.params.productId;
+  const product =
+    productId && state.productListReducer.length > 0
+      ? getProductById(state.productListReducer, productId)
+      : {};
+  return {
+    product,
+    products: state.productListReducer,
+    categories: state.categoryListReducer,
+  };
 }
 
 const mapDispatchToProps = {
-    getCategories,saveProduct
-}
+  getCategories,
+  saveProduct,
+};
 
-
-
-export default connect(mapDispatchToProps)(AddOrUpdateProduct)
+export default connect(mapStateToProps, mapDispatchToProps)(AddOrUpdateProduct);

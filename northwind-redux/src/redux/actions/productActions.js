@@ -5,14 +5,14 @@ import * as actionType from './actionTypes';
 export function createProdutcSuccess(product){
     return {
         type : actionType.CREATE_PRODUCT_SUCCESS,
-        patload : product
+        payload : product
     }
 }
 
 export function updateProductSuccess(product){
     return {
         type : actionType.UPDATE_PRODUCT_SUCCESS,
-        patload : product
+        payload : product
     }
 }
 
