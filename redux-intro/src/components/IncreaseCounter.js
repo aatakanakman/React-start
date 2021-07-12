@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import {increaseCounter} from '../redux/actions/counterActions';
-import {connect} from "react-redux";
+import React, {Component} from 'react'
+import { bindActionCreators } from 'redux'
+import { increaseCounter } from '../redux/actions/counterActions'
+import { connect } from 'react-redux'
 
 class IncreaseCounter extends Component {
     render() {
@@ -20,12 +20,12 @@ class IncreaseCounter extends Component {
 
 function mapDispatchToProps(dispatch) {
     
-    return{
+    return {
         actions : bindActionCreators(increaseCounter,dispatch)
     }
 
-}
+} 
 
-export default connect(mapDispatchToProps)(IncreaseCounter);
+export default connect(mapDispatchToProps)(IncreaseCounter)
 
 
