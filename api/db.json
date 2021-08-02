@@ -623,6 +623,14 @@
       "unitsInStock": "123123",
       "categoryId": 4,
       "id": 79
+    },
+    {
+      "productName": "asdasd",
+      "categoryId": 4,
+      "unitPrice": "12",
+      "quantityPerUnit": "12",
+      "unitsInStock": "12",
+      "id": 80
     }
   ],
   "categories": [
