@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { ListGroup, ListGroupItem,Badge } from "reactstrap";
+import { ListGroup, ListGroupItem, Badge } from "reactstrap";
 import { bindActionCreators } from "redux";
 import * as categoryActions from "../../redux/actions/categoryActions";
 import * as productActions from "../../redux/actions/productActions";
@@ -12,13 +12,16 @@ class CategoryList extends Component {
 
   selectCategory = (category) => {
     this.props.actions.changeCategory(category);
-    this.props.actions.getProducts(category.id)
-  };                        
-  
+    this.props.actions.getProducts(category.id);
+  };
+
   render() {
     return (
       <div>
-        <h3> <Badge color = "warning">Categories</Badge></h3>
+        <h3>
+          {" "}
+          <Badge color="warning">Categories</Badge>
+        </h3>
         <ListGroup>
           {this.props.categories.map((category) => (
             <ListGroupItem
@@ -42,7 +45,7 @@ function mapStateToProps(state) {
     categories: state.categoryListReducer,
   };
 }
-
+//yeni branch denemesi
 //Action bağlama
 function mapDispatchToProps(dispatch) {
   return {
